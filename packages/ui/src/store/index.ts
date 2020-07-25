@@ -14,14 +14,14 @@ import BlobModel from '../business/azureBlobStorage/blob/blob.model';
 Vue.use(Vuex);
 
 type RootState = {
-  blobList: Array<BlobModel>;
+  blobList: Array<BlobModel> | null;
   connectionList: Array<ConnectionModel>;
   currentConnection: ConnectionModel | null;
 };
 
 const store: StoreOptions<RootState> = {
   state: {
-    blobList: Array<BlobModel>(),
+    blobList: null,
     connectionList: Array<ConnectionModel>(),
     currentConnection: null,
   },
@@ -45,9 +45,13 @@ const store: StoreOptions<RootState> = {
   actions: {
     getBlobList({ commit, state }) {
       if (state.currentConnection !== null) {
-        getBlobList(state.currentConnection).then((blobs) => {
-          commit('setBlobList', blobs);
-        });
+        commit('setBlobList', null);
+
+        getBlobList(state.currentConnection)
+          .then((blobs) => {
+            commit('setBlobList', blobs);
+          })
+          .catch((error) => console.error(error));
       }
     },
 

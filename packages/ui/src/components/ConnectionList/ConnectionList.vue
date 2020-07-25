@@ -7,7 +7,12 @@
     </b-row>
 
     <b-row v-for="item in items" :key="item.accountName">
-      <connection-item v-bind:account="item.accountName" v-bind:container="item.containerName" />
+      <connection-item
+        v-bind:account="item.accountName"
+        v-bind:container="item.containerName"
+        v-bind:isActive="isActive(item.id)"
+        v-bind:isLoaded="isLoaded"
+      />
     </b-row>
   </b-container>
 </template>
@@ -18,7 +23,7 @@ import Vue from 'vue';
 import CreateConnectionDialog from './CreateConnectionDialog.vue';
 import ConnectionItem from './ConnectionItem.vue';
 
-import store from '../../store'; 
+import store from '../../store';
 import { ConnectionModel } from '../../business/localStorage/connection';
 
 export default Vue.extend({
@@ -30,15 +35,23 @@ export default Vue.extend({
   data() {
     return {
       connections: Array<ConnectionModel>(),
-    }
+    };
   },
   computed: {
     items() {
       return this.$store.state.connectionList;
-    }
+    },
+    isLoaded() {
+      return this.$store.state.blobList !== null;
+    },
+  },
+  methods: {
+    isActive(id: string) {
+      return this.$store.state.currentConnection.id === id;
+    },
   },
   mounted() {
     this.$store.dispatch('getConnectionList');
-  }
+  },
 });
 </script>
