@@ -2,6 +2,12 @@ import { v4 as uuid } from 'uuid';
 import { IsString, Length, IsUUID } from 'class-validator';
 
 export class ConnectionModel {
+  static createConnectionModel(accountName: string, containerName: string, sas: string): ConnectionModel {
+    const id = uuid();
+
+    return new ConnectionModel(id, accountName, containerName, sas);
+  }
+
   @IsString()
   @IsUUID('4')
   readonly id: string;
@@ -17,8 +23,8 @@ export class ConnectionModel {
   @IsString()
   readonly containerName: string;
 
-  constructor(accountName: string, containerName: string, sas: string) {
-    this.id = uuid();
+  constructor(id: string, accountName: string, containerName: string, sas: string) {
+    this.id = id;
     this.accountName = accountName;
     this.containerName = containerName;
     this.sas = sas;

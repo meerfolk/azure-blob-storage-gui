@@ -37,7 +37,7 @@ export default Vue.extend({
   },
   methods: {
     async createNewConnection() {
-      const connection = new ConnectionModel(this.accountName, this.containerName, this.sasToken);
+      const connection = ConnectionModel.createConnectionModel(this.accountName, this.containerName, this.sasToken);
 
       const errors = await validate(connection);
 

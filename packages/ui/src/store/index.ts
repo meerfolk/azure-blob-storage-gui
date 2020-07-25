@@ -8,6 +8,7 @@ import {
   saveConnection,
   ConnectionModel,
   getCurrentConnectionId,
+  saveCurrentConnectionId,
 } from '../business/localStorage/connection';
 import BlobModel from '../business/azureBlobStorage/blob/blob.model';
 
@@ -69,24 +70,23 @@ const store: StoreOptions<RootState> = {
 
       commit('setConnectionList', connections);
 
-      this.dispatch('changeCurrentConnection');
+      this.dispatch('changeCurrentConnection', getCurrentConnectionId());
     },
 
-    changeCurrentConnection({ commit, state }) {
-      const currentConnectionId = getCurrentConnectionId();
-
+    changeCurrentConnection({ commit, state }, connectionId?: string) {
       let currentConnection: ConnectionModel = state.connectionList[0] || null;
 
-      currentConnection =
-        state.connectionList.find((connection) => connection.id === currentConnectionId) || currentConnection;
-
-      if (currentConnection !== undefined) {
-        commit('setCurrentConnection', currentConnection);
-        this.dispatch('getBlobList');
-        return;
+      if (connectionId !== undefined) {
+        currentConnection =
+          state.connectionList.find((connection) => connection.id === connectionId) || currentConnection;
       }
 
-      console.warn(`Can't find connection with currentConnectionId`);
+      commit('setCurrentConnection', currentConnection);
+      this.dispatch('getBlobList');
+
+      if (currentConnection !== null) {
+        saveCurrentConnectionId(currentConnection.id);
+      }
     },
   },
 };
