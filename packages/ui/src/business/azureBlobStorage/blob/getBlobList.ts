@@ -1,14 +1,13 @@
-import getBlobStorageService from './getBlobStorageService';
-import BlobModel from './blob.model';
+import { getContainerClient, BlobModel } from '.';
 
 import { ConnectionModel } from '../../localStorage/connection';
 
-export default async function getBlobList(connectionDto: ConnectionModel): Promise<BlobModel[]> {
-  const blobStorageService = getBlobStorageService(connectionDto);
+const PAGE_SIZE = 1000;
 
-  const containertClient = blobStorageService.getContainerClient(connectionDto.containerName);
+export async function getBlobList(connectionDto: ConnectionModel): Promise<BlobModel[]> {
+  const containertClient = getContainerClient(connectionDto);
 
-  const iterator = containertClient.listBlobsFlat().byPage({ maxPageSize: 20 });
+  const iterator = containertClient.listBlobsFlat().byPage({ maxPageSize: PAGE_SIZE });
 
   const {
     segment: { blobItems },

@@ -12,7 +12,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import BlobList from './BlobList.vue';
+import BlobList from './BlobList/BlobList.vue';
 import ConnectionList from './ConnectionList/ConnectionList.vue';
 
 export default Vue.extend({

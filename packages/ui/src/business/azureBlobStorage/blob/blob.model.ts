@@ -1,3 +1,3 @@
-export default class BlobModel {
+export class BlobModel {
   constructor(readonly name: string) {}
 }

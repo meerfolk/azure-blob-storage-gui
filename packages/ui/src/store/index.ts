@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 
-import getBlobList from '../business/azureBlobStorage/blob/getBlobList';
+import { getBlobList, BlobModel, getBlob } from '../business/azureBlobStorage/blob';
 
 import {
   getConnectionList,
@@ -10,7 +10,6 @@ import {
   getCurrentConnectionId,
   saveCurrentConnectionId,
 } from '../business/localStorage/connection';
-import BlobModel from '../business/azureBlobStorage/blob/blob.model';
 
 Vue.use(Vuex);
 
@@ -18,6 +17,7 @@ type RootState = {
   blobList: Array<BlobModel> | null;
   connectionList: Array<ConnectionModel>;
   currentConnection: ConnectionModel | null;
+  currentBlobContent: string | null;
 };
 
 const store: StoreOptions<RootState> = {
@@ -25,6 +25,7 @@ const store: StoreOptions<RootState> = {
     blobList: null,
     connectionList: Array<ConnectionModel>(),
     currentConnection: null,
+    currentBlobContent: null,
   },
   mutations: {
     setBlobList(state, blobs) {
@@ -42,6 +43,10 @@ const store: StoreOptions<RootState> = {
     setCurrentConnection(state, connection: ConnectionModel) {
       state.currentConnection = connection;
     },
+
+    setCurrentBlobContent(state, content: string) {
+      state.currentBlobContent = content;
+    }
   },
   actions: {
     getBlobList({ commit, state }) {
@@ -56,13 +61,11 @@ const store: StoreOptions<RootState> = {
       }
     },
 
-    createNewConnection({ commit, state }, connectionModel: ConnectionModel) {
+    createNewConnection({ commit }, connectionModel: ConnectionModel) {
       saveConnection(connectionModel);
       commit('addConnection', connectionModel);
 
-      if (state.currentConnection === null) {
-        state.currentConnection = connectionModel;
-      }
+      this.dispatch('changeCurrentConnection', connectionModel.id);
     },
 
     getConnectionList({ commit }) {
@@ -88,6 +91,19 @@ const store: StoreOptions<RootState> = {
         saveCurrentConnectionId(currentConnection.id);
       }
     },
+
+    getBlobContent({ commit, state }, blobName: string) {
+      if (state.currentConnection === null) {
+        console.error('Trying to set current blob without current connection');
+        return;
+      }
+
+      getBlob(state.currentConnection, blobName).then(
+        (blobContent: string) => {
+          commit('setCurrentBlobContent', blobContent);
+        }
+      );
+    }
   },
 };
 
