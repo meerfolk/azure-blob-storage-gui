@@ -2,6 +2,7 @@
   <div>
     <view-blob-dialog />
 
+    <blob-prefix />
     <b-table
       id="blobListTable"
       :items="items"
@@ -37,7 +38,8 @@
 import Vue from 'vue';
 import { BIcon } from 'bootstrap-vue';
 
-import ViewBlobDialog from './ViewBlobDialog.vue';
+import ViewBlobDialog from './ViewBlobDialog';
+import BlobPrefix from './BlobPrefix';
 
 import store from '../../store';
 
@@ -47,6 +49,8 @@ export default Vue.extend({
   components: {
     'b-icon': BIcon,
     'view-blob-dialog': ViewBlobDialog,
+    'blob-prefix': BlobPrefix,
+    BlobPrefix,
   },
   computed: {
     items() {

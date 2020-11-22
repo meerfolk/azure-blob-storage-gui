@@ -4,10 +4,12 @@ import { ConnectionModel } from '../../localStorage/connection';
 
 const PAGE_SIZE = 1000;
 
-export async function getBlobList(connectionDto: ConnectionModel): Promise<BlobModel[]> {
+export async function getBlobList(connectionDto: ConnectionModel, prefix: string): Promise<BlobModel[]> {
   const containertClient = getContainerClient(connectionDto);
 
-  const iterator = containertClient.listBlobsFlat().byPage({ maxPageSize: PAGE_SIZE });
+  const iterator = containertClient
+    .listBlobsFlat({ prefix })
+    .byPage({ maxPageSize: PAGE_SIZE });
 
   const {
     segment: { blobItems },

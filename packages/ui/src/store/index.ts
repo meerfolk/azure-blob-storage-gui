@@ -18,6 +18,7 @@ type RootState = {
   connectionList: Array<ConnectionModel>;
   currentConnection: ConnectionModel | null;
   currentBlobContent: string | null;
+  prefix: string;
 };
 
 const store: StoreOptions<RootState> = {
@@ -26,6 +27,7 @@ const store: StoreOptions<RootState> = {
     connectionList: Array<ConnectionModel>(),
     currentConnection: null,
     currentBlobContent: null,
+    prefix: '',
   },
   mutations: {
     setBlobList(state, blobs) {
@@ -46,6 +48,10 @@ const store: StoreOptions<RootState> = {
 
     setCurrentBlobContent(state, content: string) {
       state.currentBlobContent = content;
+    },
+
+    setPrefix(state, prefix: string) {
+      state.prefix = prefix;
     }
   },
   actions: {
@@ -53,7 +59,7 @@ const store: StoreOptions<RootState> = {
       if (state.currentConnection !== null) {
         commit('setBlobList', null);
 
-        getBlobList(state.currentConnection)
+        getBlobList(state.currentConnection, state.prefix)
           .then((blobs) => {
             commit('setBlobList', blobs);
           })
@@ -103,6 +109,16 @@ const store: StoreOptions<RootState> = {
           commit('setCurrentBlobContent', blobContent);
         }
       );
+    },
+
+    changePrefix({ commit, state, dispatch }, prefix: string) {
+      if (prefix === state.prefix) {
+        return;
+      }
+
+      commit('setPrefix', prefix);
+
+      dispatch('getBlobList');
     }
   },
 };
