@@ -19,6 +19,7 @@ type RootState = {
   currentConnection: ConnectionModel | null;
   currentBlobContent: string | null;
   prefix: string;
+  blobName: string | null;
 };
 
 const store: StoreOptions<RootState> = {
@@ -28,10 +29,15 @@ const store: StoreOptions<RootState> = {
     currentConnection: null,
     currentBlobContent: null,
     prefix: '',
+    blobName: null,
   },
   mutations: {
     setBlobList(state, blobs) {
       state.blobList = blobs;
+    },
+
+    setBlobName(state, blobName: string | null) {
+      state.blobName = blobName;
     },
 
     addConnection(state, connection: ConnectionModel) {
@@ -103,6 +109,8 @@ const store: StoreOptions<RootState> = {
         console.error('Trying to set current blob without current connection');
         return;
       }
+
+      commit('setBlobName', blobName);
 
       getBlob(state.currentConnection, blobName).then(
         (blobContent: string) => {
