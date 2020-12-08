@@ -1,14 +1,20 @@
 <template>
-  <b-card class="col-12 m-2 p-0" v-bind:class="{ active: isActive && isLoaded }">
+  <b-card
+    class="col-12 m-2 p-0"
+    v-bind:class="{ active: isActive && isLoaded }"
+  >
     <div class="row">
-      <div class="col-10 text-left">
+      <div class="col-8 text-left">
         <b>AccountName:</b>
       </div>
-      <div class="col-2" v-if="isActive && !isLoaded">
+      <div class="col-1" v-if="isActive && !isLoaded">
         <b-icon icon="check" />
       </div>
-      <div class="col-2" v-if="isActive && isLoaded">
+      <div class="col-1" v-if="isActive && isLoaded">
         <b-icon icon="check-all" variant="success" />
+      </div>
+      <div class="col-2">
+        <connection-menu v-bind:connectionId="connectionId" />
       </div>
       <div class="col-12 text-left">
         {{ connection.accountName }}
@@ -38,23 +44,28 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BIcon } from 'bootstrap-vue';
+import { BCard, BIcon } from 'bootstrap-vue';
 
 import { ConnectionModel } from '../../business/localStorage/connection';
 
-import store from '../../store';
+import ConnectionMenu from './ConnectionMenu.vue';
 
 export default Vue.extend({
-  store,
+  name: 'connection-item',
   props: {
     connection: ConnectionModel,
-    account: String,
-    container: String,
     isActive: Boolean,
     isLoaded: Boolean,
   },
   components: {
     'b-icon': BIcon,
+    'b-card': BCard,
+    ConnectionMenu,
+  },
+  computed: {
+    connectionId() {
+      return this.$props.connection.id;
+    },
   },
   methods: {
     activate() {

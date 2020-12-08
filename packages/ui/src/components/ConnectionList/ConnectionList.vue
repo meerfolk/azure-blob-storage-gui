@@ -3,11 +3,17 @@
     <create-connection-dialog />
 
     <b-row>
-      <b-button @click="$bvModal.show('create-connection-dialog')" class="m-3">Add connection</b-button>
+      <b-button @click="$bvModal.show('create-connection-dialog')" class="m-3">
+        Add connection
+      </b-button>
     </b-row>
 
     <b-row v-for="item in items" :key="item.accountName">
-      <connection-item v-bind:connection="item" v-bind:isActive="isActive(item.id)" v-bind:isLoaded="isLoaded" />
+      <connection-item
+        v-bind:connection="item"
+        v-bind:isActive="isActive(item.id)"
+        v-bind:isLoaded="isLoaded"
+      />
     </b-row>
   </b-container>
 </template>
@@ -25,7 +31,7 @@ export default Vue.extend({
   store,
   components: {
     'create-connection-dialog': CreateConnectionDialog,
-    'connection-item': ConnectionItem,
+    ConnectionItem,
   },
   computed: {
     items() {
