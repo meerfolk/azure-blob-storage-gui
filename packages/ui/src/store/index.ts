@@ -5,7 +5,7 @@ import { getBlobList, BlobModel, getBlob } from '../business/azureBlobStorage/bl
 
 import {
   getConnectionList,
-  saveConnection,
+  saveConnections,
   ConnectionModel,
   getCurrentConnectionId,
   saveCurrentConnectionId,
@@ -73,9 +73,10 @@ const store: StoreOptions<RootState> = {
       }
     },
 
-    createNewConnection({ commit }, connectionModel: ConnectionModel) {
-      saveConnection(connectionModel);
+    createNewConnection({ commit, state }, connectionModel: ConnectionModel) {
       commit('addConnection', connectionModel);
+
+      saveConnections(state.connectionList);
 
       this.dispatch('changeCurrentConnection', connectionModel.id);
     },
