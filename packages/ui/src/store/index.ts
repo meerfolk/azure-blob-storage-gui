@@ -44,6 +44,20 @@ const store: StoreOptions<RootState> = {
       state.connectionList = [...state.connectionList, connection];
     },
 
+    removeConnection(state, id: string) {
+      const list = state.connectionList;
+
+      const index = list.findIndex(
+        (connection) => connection.id === id,
+      );
+
+      if (index < 0) {
+        return;
+      }
+
+      state.connectionList = list.slice(0, index).concat(list.slice(index + 1, list.length));
+    },
+
     setConnectionList(state, connectionList: ConnectionModel[]) {
       state.connectionList = connectionList;
     },
@@ -128,6 +142,16 @@ const store: StoreOptions<RootState> = {
       commit('setPrefix', prefix);
 
       dispatch('getBlobList');
+    },
+
+    removeConnection({ commit, state, dispatch }, id: string) {
+      commit('removeConnection', id);
+
+      saveConnections(state.connectionList);
+
+      if (id === state.currentConnection?.id) {
+        dispatch('changeCurrentConnection');
+      }
     }
   },
 };
