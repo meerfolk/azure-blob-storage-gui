@@ -4,12 +4,13 @@
   "description": "GUI for simple using azure blob storage",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "lerna run build && ncp ./packages/ui/dist ./packages/app/dist/ui && lerna run deploy"
   },
   "author": "Meerfolk",
   "license": "ISC",
   "devDependencies": {
     "lerna": "^3.22.1",
+    "ncp": "^2.0.0",
     "prettier": "^2.0.5"
   }
 }

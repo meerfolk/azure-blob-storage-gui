@@ -1,15 +1,18 @@
 import { app, BrowserWindow } from 'electron';
 import { join } from 'path';
 
+import { Menu } from './menu';
+
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 1024,
+    width: 1280,
     height: 600,
   });
 
-  mainWindow.loadFile(join(__dirname, '../../ui/dist/index.html'));
+  mainWindow.loadFile(join(__dirname, './ui/index.html'));
 
-  mainWindow.webContents.openDevTools();
+  app.setName('AZBlobs');
+  new Menu(app).create();
 }
 
 app.on('ready', () => {
