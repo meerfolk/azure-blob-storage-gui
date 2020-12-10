@@ -1,3 +1,6 @@
+import moment from 'moment';
+import { BlobItem } from '@azure/storage-blob';
+
 import { getContainerClient, BlobModel } from '.';
 
 import { ConnectionModel } from '../../localStorage/connection';
@@ -15,5 +18,9 @@ export async function getBlobList(connectionDto: ConnectionModel, prefix: string
     segment: { blobItems },
   } = (await iterator.next()).value;
 
-  return blobItems.map((blob: { name: string }) => new BlobModel(blob.name));
+  return blobItems.map((blob: BlobItem) => new BlobModel(
+    blob.name,
+    moment(blob.properties.lastModified)
+      .format('YYYY-MM-DD HH:mm:ss Z'),
+  ));
 }
