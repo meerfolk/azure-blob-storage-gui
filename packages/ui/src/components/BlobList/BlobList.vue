@@ -71,6 +71,12 @@ export default Vue.extend({
           class: 'text-left',
         },
         {
+          key: 'updatedAt',
+          label: 'Last Modified',
+          sortable: true,
+          class: 'text-left',
+        },
+        {
           key: 'viewButton',
           label: '',
         },
