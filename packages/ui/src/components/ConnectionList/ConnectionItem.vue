@@ -1,24 +1,13 @@
 <template>
   <b-card
     class="col-12 m-2 p-0"
-    v-bind:class="{ active: isActive && isLoaded }"
+    v-bind:class="{ loaded: isActive && isLoaded, active: isActive }"
   >
-    <div class="row">
-      <div class="col-8 text-left">
-        <b>AccountName:</b>
+    <div class="main-header">
+      <div class="account-name text-left">
+        <b>{{ connection.accountName }}</b>
       </div>
-      <div class="col-1" v-if="isActive && !isLoaded">
-        <b-icon icon="check" />
-      </div>
-      <div class="col-1" v-if="isActive && isLoaded">
-        <b-icon icon="check-all" variant="success" />
-      </div>
-      <div class="col-2">
-        <connection-menu v-bind:connectionId="connectionId" />
-      </div>
-      <div class="col-12 text-left">
-        {{ connection.accountName }}
-      </div>
+      <connection-menu v-bind:connectionId="connectionId" />
     </div>
 
     <hr />
@@ -76,7 +65,20 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.active {
+.loaded {
   background-color: #c4f2b5;
+}
+.active {
+  border-width: 2px;
+  border-color: green;
+}
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.account-name {
+  display: flex;
+  align-items: center;
 }
 </style>

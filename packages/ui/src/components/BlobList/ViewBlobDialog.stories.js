@@ -8,28 +8,26 @@ export default {
     component: ViewBlobDialog,
 };
 
-const Template = (args, data) => {
-    return {
-        components: { ViewBlobDialog },
-        template: `
-            <div>
-                <button @click="show">show</button>
-                <view-blob-dialog />
-            </div>
-        `,
-        store: new Vuex.Store({
-            state: {
-                currentBlobContent: args.text,
-                blobName: 'Test blob',
-            },
-        }),
-        methods: {
-            show() {
-                this.$bvModal.show('view-blob-dialog');
-            },
+const Template = (args) => ({
+    components: { ViewBlobDialog },
+    template: `
+        <div>
+            <button @click="show">show</button>
+            <view-blob-dialog />
+        </div>
+    `,
+    store: new Vuex.Store({
+        state: {
+            currentBlobContent: args.text,
+            blobName: 'Test blob',
         },
-    }
-};
+    }),
+    methods: {
+        show() {
+            this.$bvModal.show('view-blob-dialog');
+        },
+    },
+});
 
 export const Json = Template.bind({});
 Json.args = {

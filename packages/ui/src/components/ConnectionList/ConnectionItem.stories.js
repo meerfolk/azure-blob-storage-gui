@@ -47,6 +47,12 @@ Loaded.args = {
     isLoaded: true,
 };
 
+export const Active = Template.bind({});
+Active.args = {
+    isActive: true,
+    isLoaded: false,
+};
+
 export const Default = Template.bind({});
 Default.args = {
     isActive: false,
