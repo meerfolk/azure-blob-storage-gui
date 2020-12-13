@@ -1,13 +1,27 @@
-import { Menu as EMenu, App, MenuItem, MenuItemConstructorOptions } from 'electron';
+import {
+    Menu as EMenu,
+    App,
+    MenuItem,
+    MenuItemConstructorOptions,
+    WebContents,
+} from 'electron';
+
+import { SETTINGS_OPEN } from './messages';
 
 export class Menu {
     private readonly isMac: boolean = false;
     private readonly baseSubMenus: MenuItemConstructorOptions[] = [
+        {
+            label: 'Settings',
+            click: () => {
+                this.content.send(SETTINGS_OPEN);
+            },
+        },
         { type: 'separator' },
         { role: 'quit' },
     ];
 
-    constructor(private readonly app: App) {
+    constructor(private readonly app: App, private readonly content: WebContents) {
         this.isMac = process.platform === 'darwin';
     }
 

@@ -7,12 +7,15 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   mainWindow.loadFile(join(__dirname, './ui/index.html'));
 
   app.setName('AZBlobs');
-  new Menu(app).create();
+  new Menu(app, mainWindow.webContents).create();
 }
 
 app.on('ready', () => {
