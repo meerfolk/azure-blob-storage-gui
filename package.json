@@ -4,7 +4,9 @@
   "description": "GUI for simple using azure blob storage",
   "main": "index.js",
   "scripts": {
-    "build": "lerna run build && ncp ./packages/ui/dist ./packages/app/dist/ui && lerna run deploy"
+    "copy:ui": "ncp ./packages/ui/dist ./packages/app/dist/ui",
+    "build": "lerna run build && npm run copy:ui && lerna run deploy",
+    "start": "lerna run build && npm run copy:ui && lerna run start:app"
   },
   "author": "Meerfolk",
   "license": "ISC",
