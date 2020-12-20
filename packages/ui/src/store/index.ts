@@ -11,6 +11,8 @@ import {
   saveCurrentConnectionId,
 } from '../business/localStorage/connection';
 
+import Settings from './Settings';
+
 Vue.use(Vuex);
 
 type RootState = {
@@ -23,6 +25,9 @@ type RootState = {
 };
 
 const store: StoreOptions<RootState> = {
+  modules: {
+    Settings,
+  },
   state: {
     blobList: null,
     connectionList: Array<ConnectionModel>(),
