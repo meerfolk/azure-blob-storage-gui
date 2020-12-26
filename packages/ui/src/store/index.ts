@@ -10,7 +10,9 @@ import {
   getCurrentConnectionId,
   saveCurrentConnectionId,
 } from '../business/localStorage/connection';
+import { getErrorMessage } from '../business/azureBlobStorage/error-messages';
 
+import Connections from './Connections';
 import Settings from './Settings';
 
 Vue.use(Vuex);
@@ -27,6 +29,7 @@ type RootState = {
 const store: StoreOptions<RootState> = {
   modules: {
     settings: Settings,
+    connections: Connections,
   },
   state: {
     blobList: null,
@@ -88,7 +91,11 @@ const store: StoreOptions<RootState> = {
           .then((blobs) => {
             commit('setBlobList', blobs);
           })
-          .catch((error) => console.error(error));
+          .catch((error) => {
+            const errorMessage = getErrorMessage(error);
+
+            commit('connections/setErrorMessage', errorMessage);
+          });
       }
     },
 
