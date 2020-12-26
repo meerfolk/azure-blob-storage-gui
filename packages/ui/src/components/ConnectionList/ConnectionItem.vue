@@ -32,36 +32,37 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { BCard, BIcon } from 'bootstrap-vue';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
 import { ConnectionModel } from '../../business/localStorage/connection';
 
 import ConnectionMenu from './ConnectionMenu.vue';
 
-export default Vue.extend({
+const connectionsStore = namespace('connections');
+
+@Component({
   name: 'connection-item',
-  props: {
-    connection: ConnectionModel,
-    isActive: Boolean,
-    isLoaded: Boolean,
-  },
   components: {
-    'b-icon': BIcon,
-    'b-card': BCard,
     ConnectionMenu,
   },
-  computed: {
-    connectionId() {
-      return this.$props.connection.id;
-    },
-  },
-  methods: {
-    activate() {
-      this.$store.dispatch('changeCurrentConnection', this.connection.id);
-    },
-  },
-});
+})
+export default class ConnectionItem extends Vue {
+  @Prop({ required: true, default: false }) readonly isActive: boolean;
+  @Prop({ required: true, default: false }) readonly isLoaded: boolean;
+  @Prop({ required: true }) readonly connection: ConnectionModel;
+
+  @connectionsStore.State
+  public errorMessage: string | null;
+
+  get connectionId(): void {
+    return this.connection.id;
+  }
+
+  public activate(): void {
+    this.$store.dispatch('changeCurrentConnection', this.connection.id);
+  }
+}
 </script>
 
 <style scoped>
