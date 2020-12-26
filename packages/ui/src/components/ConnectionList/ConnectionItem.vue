@@ -1,8 +1,20 @@
 <template>
   <b-card
     class="col-12 m-2 p-0"
-    v-bind:class="{ loaded: isActive && isLoaded, active: isActive }"
+    v-bind:class="{
+      loaded: isActive && isLoaded,
+      active: isActive,
+      failed: isFailed,
+    }"
   >
+    <b-icon
+      v-b-tooltip.hover
+      :title="errorMessage"
+      class="failed-info"
+      icon="info-circle-fill"
+      variant="danger"
+      v-if="isFailed"
+    ></b-icon>
     <div class="main-header">
       <div class="account-name text-left">
         <b>{{ connection.accountName }}</b>
@@ -53,13 +65,17 @@ export default class ConnectionItem extends Vue {
   @Prop({ required: true }) readonly connection: ConnectionModel;
 
   @connectionsStore.State
-  public errorMessage: string | null;
+  private errorMessage: string | null;
 
-  get connectionId(): void {
+  private get connectionId(): void {
     return this.connection.id;
   }
 
-  public activate(): void {
+  private get isFailed(): boolean {
+    return Boolean(this.errorMessage);
+  }
+
+  private activate(): void {
     this.$store.dispatch('changeCurrentConnection', this.connection.id);
   }
 }
@@ -73,6 +89,9 @@ export default class ConnectionItem extends Vue {
   border-width: 2px;
   border-color: green;
 }
+.failed {
+  border-color: red;
+}
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -81,5 +100,11 @@ export default class ConnectionItem extends Vue {
 .account-name {
   display: flex;
   align-items: center;
+}
+.failed-info {
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
 }
 </style>

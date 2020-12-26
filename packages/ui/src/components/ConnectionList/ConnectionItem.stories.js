@@ -33,10 +33,21 @@ const Template = (args) => ({
         </div>
     `,
     store: new Vuex.Store({
+        modules: {
+            connections: {
+                namespaced: true,
+                state: {
+                    errorMessage: args.errorMessage,
+                },
+            },
+        },
         actions: {
             removeConnection({}, id) {
                 action('removeConnection')(id);
             },
+            changeCurrentConnection({}, id) {
+                action('changeCurrentConnection')(id);
+            }
         },
     }),
 })
@@ -45,6 +56,13 @@ export const Loaded = Template.bind({});
 Loaded.args = {
     isActive: true,
     isLoaded: true,
+};
+
+export const Failed = Template.bind({});
+Failed.args = {
+    isLoaded: false,
+    isActive: true,
+    errorMessage: 'TEST',
 };
 
 export const Active = Template.bind({});
