@@ -26,7 +26,7 @@ type RootState = {
 
 const store: StoreOptions<RootState> = {
   modules: {
-    Settings,
+    settings: Settings,
   },
   state: {
     blobList: null,
