@@ -1,11 +1,19 @@
-export const FORBIDDEN = 'Authorization problem';
-
+import { RestError } from '@azure/storage-blob'; 
 export const DEFAULT = 'Unknown Error';
 
-export const getErrorMessageByStatusCode = (code: number): string => {
-    switch (code) {
+interface AuthenticationErrorDetails {
+    Code: string;
+    AuthenticationErrorDetail: string;
+}
+
+const getAuthentificationMessage = (details: AuthenticationErrorDetails): string => {
+    return [details.Code, details.AuthenticationErrorDetail].join('\n');
+}
+
+export const getErrorMessage = (error: RestError): string => {
+    switch (error.statusCode) {
         case 403:
-            return FORBIDDEN;
+            return getAuthentificationMessage(error.details as AuthenticationErrorDetails);
         default: 
             return DEFAULT;
     }

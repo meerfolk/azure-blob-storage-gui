@@ -10,7 +10,7 @@ import {
   getCurrentConnectionId,
   saveCurrentConnectionId,
 } from '../business/localStorage/connection';
-import { getErrorMessageByStatusCode } from '../business/azureBlobStorage/error-messages';
+import { getErrorMessage } from '../business/azureBlobStorage/error-messages';
 
 import Connections from './Connections';
 import Settings from './Settings';
@@ -92,7 +92,7 @@ const store: StoreOptions<RootState> = {
             commit('setBlobList', blobs);
           })
           .catch((error) => {
-            const errorMessage = getErrorMessageByStatusCode(error.statusCode);
+            const errorMessage = getErrorMessage(error);
 
             commit('connections/setErrorMessage', errorMessage);
           });
