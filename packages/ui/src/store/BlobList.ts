@@ -28,7 +28,7 @@ export default class BlobList extends VuexModule<any, RootState> {
     }
 
     @Mutation
-    private setList(value: Array<BlobModel> | null) {
+    public setList(value: Array<BlobModel> | null) {
         this.list = value;
     }
 

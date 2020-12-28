@@ -114,7 +114,7 @@ const store: StoreOptions<RootState> = {
       this.dispatch('changeCurrentConnection', getCurrentConnectionId());
     },
 
-    changeCurrentConnection({ commit, state }, connectionId?: string) {
+    changeCurrentConnection({ commit, state, dispatch }, connectionId?: string) {
       let currentConnection: ConnectionModel = state.connectionList[0] || null;
 
       if (connectionId !== undefined) {
@@ -123,7 +123,10 @@ const store: StoreOptions<RootState> = {
       }
 
       commit('setCurrentConnection', currentConnection);
-      this.dispatch('blobList/reload');
+      commit('blobList/setList', null);
+      commit('connections/setErrorMessage', null);
+
+      dispatch('blobList/reload');
 
       if (currentConnection !== null) {
         saveCurrentConnectionId(currentConnection.id);

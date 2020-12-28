@@ -72,7 +72,7 @@ export default class ConnectionItem extends Vue {
   }
 
   private get isFailed(): boolean {
-    return Boolean(this.errorMessage);
+    return this.isActive && Boolean(this.errorMessage);
   }
 
   private activate(): void {

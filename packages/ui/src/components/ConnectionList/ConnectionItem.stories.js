@@ -75,4 +75,5 @@ export const Default = Template.bind({});
 Default.args = {
     isActive: false,
     isLoaded: false,
+    errorMessage: 'TEST',
 };
