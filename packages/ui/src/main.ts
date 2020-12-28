@@ -15,6 +15,8 @@ Vue.use(BootstrapVueIcons);
 
 Vue.config.productionTip = false;
 
+store.dispatch('init');
+
 new Vue({
   router,
   store,
