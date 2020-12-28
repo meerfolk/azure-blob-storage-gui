@@ -38,11 +38,26 @@ export class Menu {
             submenu: this.baseSubMenus,
         });
     }
+    
+    private editMenu(): MenuItem {
+        return new MenuItem({
+            label: 'Edit',
+            submenu: [
+                { label: "Undo", accelerator: "CmdOrCtrl+Z", role: 'undo' },
+                { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", role: 'redo' },
+                { type: "separator" },
+                { label: "Cut", accelerator: "CmdOrCtrl+X", role: "cut" },
+                { label: "Copy", accelerator: "CmdOrCtrl+C", role: "copy" },
+                { label: "Paste", accelerator: "CmdOrCtrl+V", role: "paste" },
+                { label: "Select All", accelerator: "CmdOrCtrl+A", role: "selectAll" }
+            ],
+        });
+    }
 
     public create(): void {
         const template = this.isMac
-            ? [ this.nameMenu() ]
-            : [ this.fileMenu() ];
+            ? [ this.nameMenu(), this.editMenu() ]
+            : [ this.fileMenu(), this.editMenu() ];
 
         const menu = EMenu.buildFromTemplate(template);
 
