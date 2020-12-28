@@ -13,9 +13,12 @@ const Template = () => ({
     template: '<blob-list />',
     store: new Vuex.Store({
         modules: {
-            blobListModule: {
+            blobList: {
+                namespaced: true,
                 state: {
                     isReloading: false,
+                    list: [],
+                    prefix: null,
                 },
                 actions: {
                     reload: () => {
@@ -23,10 +26,6 @@ const Template = () => ({
                     },
                 },
             },
-        },
-        state: {
-            prefix: null,
-            blobList: [],
         },
     }),
 });

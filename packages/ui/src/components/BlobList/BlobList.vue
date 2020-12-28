@@ -42,7 +42,7 @@ import Vue from 'vue';
 import { BIcon } from 'bootstrap-vue';
 
 import ViewBlobDialog from './ViewBlobDialog';
-import BlobPrefix from './BlobPrefix';
+import Prefix from './Prefix';
 import ReloadButton from './ReloadButton';
 
 export default Vue.extend({
@@ -50,15 +50,15 @@ export default Vue.extend({
   components: {
     'b-icon': BIcon,
     'view-blob-dialog': ViewBlobDialog,
-    BlobPrefix,
+    'blob-prefix': Prefix,
     ReloadButton,
   },
   computed: {
     items() {
-      return this.$store.state.blobList;
+      return this.$store.state.blobList?.list;
     },
     totalRows() {
-      return this.$store.state.blobList?.length;
+      return this.$store.state.blobList?.list?.length;
     },
   },
   data() {

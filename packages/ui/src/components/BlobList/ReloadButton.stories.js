@@ -13,12 +13,11 @@ const Template = ({ isReloading }) => ({
     template: '<reload-button />',
     store: new Vuex.Store({
         modules: {
-            blobListModule: {
+            blobList: {
                 namespaced: true,
                 state: {
                     isReloading,
                 },
-
                 actions: {
                     reload: () => {
                         action('reload');

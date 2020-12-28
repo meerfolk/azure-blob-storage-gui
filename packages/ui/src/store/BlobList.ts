@@ -1,6 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 
-import { getBlobList } from '../business/azureBlobStorage/blob';
+import { BlobModel, getBlobList } from '../business/azureBlobStorage/blob';
 import { getErrorMessage } from '../business/azureBlobStorage/error-messages';
 
 import { RootState } from '.';
@@ -9,6 +9,8 @@ import { RootState } from '.';
 export default class BlobList extends VuexModule<any, RootState> {
     public reloadIntervalId: number | null = null;
     public isReloading: boolean = false;
+    public list: Array<BlobModel> | null = null;
+    public prefix: string = '';
 
     @Mutation
     private setReloadIntervalId(value: number | null): void {
@@ -18,6 +20,16 @@ export default class BlobList extends VuexModule<any, RootState> {
     @Mutation
     private setIsReloading(value: boolean): void {
         this.isReloading = value;
+    }
+
+    @Mutation
+    private setPrefix(value: string): void {
+        this.prefix = value;
+    }
+
+    @Mutation
+    private setList(value: Array<BlobModel> | null) {
+        this.list = value;
     }
 
     @Action
@@ -45,16 +57,15 @@ export default class BlobList extends VuexModule<any, RootState> {
     @Action
     public reload() {
         const connection = this.context.rootState.currentConnection;
-        const prefix = this.context.rootState.prefix;
 
         if (!connection) {
             return;
         }
         this.context.commit('setIsReloading', true);
 
-        getBlobList(connection, prefix)
+        getBlobList(connection, this.prefix)
             .then((blobs) => {
-                this.context.commit('setBlobList', blobs, { root: true });
+                this.context.commit('setList', blobs);
             })
             .catch((error) => {
                 const errorMessage = getErrorMessage(error);
@@ -64,5 +75,16 @@ export default class BlobList extends VuexModule<any, RootState> {
             .finally(() => {
                 this.context.commit('setIsReloading', false);
             });
+    }
+
+    @Action
+    public changePrefix(prefix: string): void {
+        if (prefix === this.prefix) {
+            return;
+        }
+
+        this.context.commit('setPrefix', prefix);
+
+        this.context.dispatch('reload');
     }
 }

@@ -32,7 +32,7 @@ const store: StoreOptions<RootState> = {
   modules: {
     settings: Settings,
     connections: Connections,
-    blobListModule: BlobList,
+    blobList: BlobList,
   },
   state: {
     blobList: null,
@@ -92,9 +92,9 @@ const store: StoreOptions<RootState> = {
       const reloadTime = state.settings?.settings?.reloadTime;
 
       if (reloadTime) {
-        dispatch('blobListModule/startReload', reloadTime);
+        dispatch('blobList/startReload', reloadTime);
       } else {
-        dispatch('blobListModule/reload');
+        dispatch('blobList/reload');
       }
     },
 
@@ -123,7 +123,7 @@ const store: StoreOptions<RootState> = {
       }
 
       commit('setCurrentConnection', currentConnection);
-      this.dispatch('blobListModule/reload');
+      this.dispatch('blobList/reload');
 
       if (currentConnection !== null) {
         saveCurrentConnectionId(currentConnection.id);
@@ -143,16 +143,6 @@ const store: StoreOptions<RootState> = {
           commit('setCurrentBlobContent', blobContent);
         }
       );
-    },
-
-    changePrefix({ commit, state, dispatch }, prefix: string) {
-      if (prefix === state.prefix) {
-        return;
-      }
-
-      commit('setPrefix', prefix);
-
-      dispatch('blobListModule/reload');
     },
 
     removeConnection({ commit, state, dispatch }, id: string) {
