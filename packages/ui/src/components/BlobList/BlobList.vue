@@ -2,7 +2,10 @@
   <div>
     <view-blob-dialog />
 
-    <blob-prefix />
+    <div class="header">
+      <reload-button />
+      <blob-prefix />
+    </div>
     <b-table
       id="blobListTable"
       :items="items"
@@ -40,17 +43,15 @@ import { BIcon } from 'bootstrap-vue';
 
 import ViewBlobDialog from './ViewBlobDialog';
 import BlobPrefix from './BlobPrefix';
-
-import store from '../../store';
+import ReloadButton from './ReloadButton';
 
 export default Vue.extend({
   name: 'blob-list',
-  store,
   components: {
     'b-icon': BIcon,
     'view-blob-dialog': ViewBlobDialog,
-    'blob-prefix': BlobPrefix,
     BlobPrefix,
+    ReloadButton,
   },
   computed: {
     items() {
@@ -100,3 +101,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.header {
+  display: flex;
+}
+</style>
