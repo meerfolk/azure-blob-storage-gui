@@ -73,8 +73,6 @@ export default class SettingsDialog extends Vue {
   }
 
   public mounted(): void {
-    this.loadSettings();
-
     this.reloadTime = this.settings?.reloadTime?.toString() ?? '0';
   }
 }

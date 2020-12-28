@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 
-import { getBlobList, BlobModel, getBlob } from '../business/azureBlobStorage/blob';
+import { BlobModel, getBlob } from '../business/azureBlobStorage/blob';
 
 import {
   getConnectionList,
@@ -14,22 +14,25 @@ import { getErrorMessage } from '../business/azureBlobStorage/error-messages';
 
 import Connections from './Connections';
 import Settings from './Settings';
+import BlobList from './BlobList';
 
 Vue.use(Vuex);
 
-type RootState = {
+export interface RootState {
   blobList: Array<BlobModel> | null;
   connectionList: Array<ConnectionModel>;
   currentConnection: ConnectionModel | null;
   currentBlobContent: string | null;
   prefix: string;
   blobName: string | null;
+  settings?: Settings,
 };
 
 const store: StoreOptions<RootState> = {
   modules: {
     settings: Settings,
     connections: Connections,
+    blobListModule: BlobList,
   },
   state: {
     blobList: null,
@@ -83,19 +86,15 @@ const store: StoreOptions<RootState> = {
     }
   },
   actions: {
-    getBlobList({ commit, state }) {
-      if (state.currentConnection !== null) {
-        commit('setBlobList', null);
+    init({ state, dispatch }): void {
+      dispatch('settings/loadSettings');
 
-        getBlobList(state.currentConnection, state.prefix)
-          .then((blobs) => {
-            commit('setBlobList', blobs);
-          })
-          .catch((error) => {
-            const errorMessage = getErrorMessage(error);
+      const reloadTime = state.settings?.settings?.reloadTime;
 
-            commit('connections/setErrorMessage', errorMessage);
-          });
+      if (reloadTime) {
+        dispatch('blobListModule/startReload', reloadTime);
+      } else {
+        dispatch('blobListModule/reload');
       }
     },
 
@@ -124,7 +123,7 @@ const store: StoreOptions<RootState> = {
       }
 
       commit('setCurrentConnection', currentConnection);
-      this.dispatch('getBlobList');
+      this.dispatch('blobListModule/reload');
 
       if (currentConnection !== null) {
         saveCurrentConnectionId(currentConnection.id);
@@ -153,7 +152,7 @@ const store: StoreOptions<RootState> = {
 
       commit('setPrefix', prefix);
 
-      dispatch('getBlobList');
+      dispatch('blobListModule/reload');
     },
 
     removeConnection({ commit, state, dispatch }, id: string) {
