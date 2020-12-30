@@ -56,7 +56,7 @@ export default class BlobList extends VuexModule<any, RootState> {
 
     @Action
     public reload() {
-        const connection = this.context.rootState.currentConnection;
+        const connection = this.context.rootState.connections?.current;
 
         if (!connection) {
             return;

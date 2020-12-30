@@ -76,7 +76,7 @@ export default class ConnectionItem extends Vue {
   }
 
   private activate(): void {
-    this.$store.dispatch('changeCurrentConnection', this.connection.id);
+    this.$store.dispatch('connections/changeCurrent', this.connection.id);
   }
 }
 </script>

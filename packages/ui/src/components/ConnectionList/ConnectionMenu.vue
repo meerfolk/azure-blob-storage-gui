@@ -23,7 +23,7 @@ export default Vue.extend({
   },
   methods: {
     remove() {
-      this.$store.dispatch('removeConnection', this.$props.connectionId);
+      this.$store.dispatch('connections/remove', this.$props.connectionId);
     },
   },
 });

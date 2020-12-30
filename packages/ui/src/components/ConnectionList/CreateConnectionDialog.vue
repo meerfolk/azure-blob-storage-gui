@@ -29,12 +29,9 @@
 import Vue from 'vue';
 import { validate, ValidationError } from 'class-validator';
 
-import store from '../../store';
-
 import { ConnectionModel } from '../../business/connection';
 
 export default Vue.extend({
-  store,
   data() {
     return {
       accountName: '',
@@ -63,7 +60,7 @@ export default Vue.extend({
         );
         console.error(this.errorMesssages);
       } else {
-        this.$store.dispatch('createNewConnection', connection);
+        this.$store.dispatch('connections/create', connection);
       }
     },
   },

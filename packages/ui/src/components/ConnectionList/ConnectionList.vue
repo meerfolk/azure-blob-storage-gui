@@ -8,7 +8,7 @@
       </b-button>
     </b-row>
 
-    <b-row v-for="item in items" :key="item.accountName">
+    <b-row v-for="item in list" :key="item.accountName">
       <connection-item
         v-bind:connection="item"
         v-bind:isActive="isActive(item.id)"
@@ -19,35 +19,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
 import CreateConnectionDialog from './CreateConnectionDialog.vue';
 import ConnectionItem from './ConnectionItem.vue';
 
-import store from '../../store';
 import { ConnectionModel } from '../../business/connection';
 
-export default Vue.extend({
-  store,
+const connectionsStore = namespace('connections');
+const blobListStore = namespace('blobList');
+
+@Component({
+  name: 'connection-list',
   components: {
-    'create-connection-dialog': CreateConnectionDialog,
     ConnectionItem,
+    CreateConnectionDialog,
   },
-  computed: {
-    items() {
-      return this.$store.state.connectionList;
-    },
-    isLoaded() {
-      return this.$store.state.blobList !== null;
-    },
-  },
-  methods: {
-    isActive(id: string) {
-      return this.$store.state.currentConnection.id === id;
-    },
-  },
-  mounted() {
-    this.$store.dispatch('getConnectionList');
-  },
-});
+})
+export default class ConnectionList extends Vue {
+  @connectionsStore.State
+  public list: Array<ConnectionModel> | null;
+  @connectionsStore.State
+  public current: ConnectionModel | null;
+
+  public get isLoaded(): boolean {
+    return blobListStore.State.list !== null;
+  }
+
+  public isActive(id: string): boolean {
+    return this.current?.id === id;
+  }
+}
 </script>
