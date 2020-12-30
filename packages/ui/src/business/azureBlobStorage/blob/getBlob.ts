@@ -1,5 +1,5 @@
 import { getContainerClient } from '.';
-import { ConnectionModel } from '../../localStorage/connection';
+import { ConnectionModel } from '../../connection';
 
 async function blobToString(blob: Blob): Promise<string> {
   const fileReader = new FileReader();

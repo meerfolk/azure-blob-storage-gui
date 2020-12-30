@@ -47,7 +47,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
-import { ConnectionModel } from '../../business/localStorage/connection';
+import { ConnectionModel } from '../../business/connection';
 
 import ConnectionMenu from './ConnectionMenu.vue';
 

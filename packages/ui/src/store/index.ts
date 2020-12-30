@@ -9,7 +9,7 @@ import {
   ConnectionModel,
   getCurrentConnectionId,
   saveCurrentConnectionId,
-} from '../business/localStorage/connection';
+} from '../business/connection';
 import { getErrorMessage } from '../business/azureBlobStorage/error-messages';
 
 import Connections from './Connections';

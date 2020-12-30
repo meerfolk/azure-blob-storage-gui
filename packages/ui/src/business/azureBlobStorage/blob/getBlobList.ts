@@ -3,7 +3,7 @@ import { BlobItem } from '@azure/storage-blob';
 
 import { getContainerClient, BlobModel } from '.';
 
-import { ConnectionModel } from '../../localStorage/connection';
+import { ConnectionModel } from '../../connection';
 
 const PAGE_SIZE = 1000;
 

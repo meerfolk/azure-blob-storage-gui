@@ -25,7 +25,7 @@ import CreateConnectionDialog from './CreateConnectionDialog.vue';
 import ConnectionItem from './ConnectionItem.vue';
 
 import store from '../../store';
-import { ConnectionModel } from '../../business/localStorage/connection';
+import { ConnectionModel } from '../../business/connection';
 
 export default Vue.extend({
   store,

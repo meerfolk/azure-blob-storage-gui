@@ -1,8 +1,9 @@
 import Vuex from 'vuex';
 import { action } from '@storybook/addon-actions';
 
+// @ts-ignore
 import ConnectionItem from './ConnectionItem.vue';
-import { ConnectionModel } from '../../business/localStorage/connection';
+import { ConnectionModel } from '../../business/connection';
 
 export default {
     title: 'Connection/ConnectionItem',
