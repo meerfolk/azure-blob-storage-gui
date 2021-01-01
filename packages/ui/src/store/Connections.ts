@@ -69,6 +69,10 @@ export default class Connections extends VuexModule {
 
     @Action
     public changeCurrent(id: string): void {
+        if (this.current?.id === id) {
+            return;
+        }
+
         const defaultConnection = this.list[0] || null;
         const currentConnection = this.list.find((connection) => connection.id === id);
 

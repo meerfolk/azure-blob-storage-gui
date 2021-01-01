@@ -40,15 +40,15 @@ const Template = (args) => ({
                 state: {
                     errorMessage: args.errorMessage,
                 },
+                actions: {
+                    remove({}, id) {
+                        action('remove')(id);
+                    },
+                    changeCurrent({}, id) {
+                        action('changeCurrent')(id);
+                    },
+                },
             },
-        },
-        actions: {
-            removeConnection({}, id) {
-                action('removeConnection')(id);
-            },
-            changeCurrentConnection({}, id) {
-                action('changeCurrentConnection')(id);
-            }
         },
     }),
 })
