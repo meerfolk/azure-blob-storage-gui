@@ -6,6 +6,9 @@
     <b-dropdown-item v-if="isNotActive" @click="changeCurrent(connectionId)"
       >Activate</b-dropdown-item
     >
+    <b-dropdown-item @click="openDialogToEdit(connectionId)">
+      Edit
+    </b-dropdown-item>
     <b-dropdown-item @click="remove(connectionId)" variant="danger"
       >Delete</b-dropdown-item
     >
@@ -23,15 +26,18 @@ const connectionsStore = namespace('connections');
 @Component({
   name: 'connection-menu',
 })
-export default class ConnectionMenu extends Vue {
+export default class Menu extends Vue {
+  @connectionsStore.State
+  public current: ConnectionModel | null;
+
   @connectionsStore.Action
   public remove: (id: string) => void;
 
   @connectionsStore.Action
   public changeCurrent: (id: string) => void;
 
-  @connectionsStore.State
-  public current: ConnectionModel | null;
+  @connectionsStore.Action
+  public openDialogToEdit: (id: string) => void;
 
   @Prop({ required: true }) public connectionId: string;
 

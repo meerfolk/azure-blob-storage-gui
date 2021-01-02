@@ -1,9 +1,9 @@
 <template>
   <b-container>
-    <create-connection-dialog />
+    <connection-dialog />
 
     <b-row>
-      <b-button @click="$bvModal.show('create-connection-dialog')" class="m-3">
+      <b-button @click="openDialog" class="m-3">
         Add connection
       </b-button>
     </b-row>
@@ -22,7 +22,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
-import CreateConnectionDialog from './CreateConnectionDialog.vue';
+import Dialog from './Dialog.vue';
 import ConnectionItem from './ConnectionItem.vue';
 
 import { ConnectionModel } from '../../business/connection';
@@ -34,7 +34,7 @@ const blobListStore = namespace('blobList');
   name: 'connection-list',
   components: {
     ConnectionItem,
-    CreateConnectionDialog,
+    'connection-dialog': Dialog,
   },
 })
 export default class ConnectionList extends Vue {
@@ -42,6 +42,9 @@ export default class ConnectionList extends Vue {
   public list: Array<ConnectionModel> | null;
   @connectionsStore.State
   public current: ConnectionModel | null;
+
+  @connectionsStore.Action
+  public openDialog: () => void;
 
   public get isLoaded(): boolean {
     return blobListStore.State.list !== null;

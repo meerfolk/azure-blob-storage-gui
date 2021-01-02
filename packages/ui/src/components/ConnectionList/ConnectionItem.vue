@@ -32,14 +32,6 @@
         {{ connection.containerName }}
       </div>
     </div>
-
-    <div class="row mt-2">
-      <div class="col-6" v-if="!isActive">
-        <b-button @click="activate()" variant="success">
-          Activate
-        </b-button>
-      </div>
-    </div>
   </b-card>
 </template>
 
@@ -49,14 +41,14 @@ import { namespace } from 'vuex-class';
 
 import { ConnectionModel } from '../../business/connection';
 
-import ConnectionMenu from './ConnectionMenu.vue';
+import Menu from './Menu.vue';
 
 const connectionsStore = namespace('connections');
 
 @Component({
   name: 'connection-item',
   components: {
-    ConnectionMenu,
+    'connection-menu': Menu,
   },
 })
 export default class ConnectionItem extends Vue {
@@ -73,10 +65,6 @@ export default class ConnectionItem extends Vue {
 
   private get isFailed(): boolean {
     return this.isActive && Boolean(this.errorMessage);
-  }
-
-  private activate(): void {
-    this.$store.dispatch('connections/changeCurrent', this.connection.id);
   }
 }
 </script>
