@@ -33,7 +33,7 @@
     "url": "https://github.com/meerfolk/azure-blob-storage-gui/issues"
   },
   "devDependencies": {
-    "electron": "^9.3.4",
+    "electron": "^9.4.0",
     "electron-packager": "^15.2.0",
     "typescript": "^3.9.7"
   },
