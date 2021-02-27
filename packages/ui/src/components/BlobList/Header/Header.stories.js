@@ -22,7 +22,8 @@ const Template = () => ({
                 },
                 actions: {
                     reload: () => action('reload')(),
-                    changePrefix: action('changePrefix'),
+                    changePrefix: (_, prefix) => action('changePrefix')(prefix),
+                    openUploadDialog: () => action('openUploadDialog')(),
                 },
             },
         },

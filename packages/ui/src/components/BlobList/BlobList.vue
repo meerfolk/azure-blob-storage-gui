@@ -1,6 +1,7 @@
 <template>
   <div>
     <view-blob-dialog />
+    <upload-blob-dialog />
 
     <blob-list-header />
     <b-table
@@ -39,6 +40,7 @@ import Vue from 'vue';
 import { BIcon } from 'bootstrap-vue';
 
 import ViewBlobDialog from './ViewBlobDialog';
+import UploadBlobDialog from './UploadDialog';
 import BlobListHeader from './Header/Header';
 
 export default Vue.extend({
@@ -47,6 +49,7 @@ export default Vue.extend({
     'b-icon': BIcon,
     'view-blob-dialog': ViewBlobDialog,
     BlobListHeader,
+    UploadBlobDialog,
   },
   computed: {
     items() {
