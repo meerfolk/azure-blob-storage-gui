@@ -6,6 +6,7 @@ import {
     getCurrentConnectionId,
     saveConnections,
     saveCurrentConnectionId,
+    updateConnection,
 } from '../business/connection';
 
 interface IListSplit {
@@ -69,7 +70,7 @@ export default class Connections extends VuexModule {
 
     @Action
     public create(model: ConnectionModel): void {
-        const newList = [...this.list, model];
+        const newList = this.list.concat([model]);
 
         saveConnections(newList);
 
@@ -80,20 +81,18 @@ export default class Connections extends VuexModule {
 
     @Action
     public edit(model: ConnectionModel): void {
-        const index = this.list.findIndex((connection) => connection.id === model.id);
-
-        if (index < 0) {
+        if (this.toEdit === null) {
+            console.error('Connection to edit should be not null');
             return;
         }
 
-        const newList = [...this.list.slice(0, index), model, ...this.list.slice(index + 1)];
+        updateConnection(this.toEdit.id, model);
 
-        saveConnections(newList);
-        this.context.commit('setList', newList);
-
-        if (model.id === this.current?.id) {
+        if (this.toEdit?.id === this.current?.id) {
             this.context.dispatch('changeCurrent', model.id);
         }
+
+        this.context.dispatch('loadList');
     }
 
     @Action

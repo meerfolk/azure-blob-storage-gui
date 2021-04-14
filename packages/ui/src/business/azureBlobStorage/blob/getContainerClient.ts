@@ -2,8 +2,23 @@ import { BlobServiceClient, ContainerClient } from '@azure/storage-blob';
 
 import { ConnectionModel } from '../../connection';
 
-export function getContainerClient(connectionDto: ConnectionModel): ContainerClient {
-  const blobService = new BlobServiceClient(`https://${connectionDto.accountName}.blob.core.windows.net?${connectionDto.sas}`);
+const clientsCache: Record<string, ContainerClient> = {};
 
-  return blobService.getContainerClient(connectionDto.containerName);
+function createContainerClient(connection: ConnectionModel): ContainerClient {
+  const blobService = new BlobServiceClient(`https://${connection.accountName}.blob.core.windows.net?${connection.sas}`);
+  const containerService = blobService.getContainerClient(connection.containerName);
+
+  clientsCache[connection.id] = containerService;
+
+  return containerService;
+}
+
+export function getContainerClient(connection: ConnectionModel): ContainerClient {
+  const cachedClient = clientsCache[connection.id];
+
+  if (cachedClient) {
+    return cachedClient;
+  }
+
+  return createContainerClient(connection);
 }

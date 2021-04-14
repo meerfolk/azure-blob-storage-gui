@@ -114,18 +114,11 @@ export default class Dialog extends Vue {
   private async handler(): void {
     const toEditModel = this.toEditModel;
 
-    const connection = toEditModel
-      ? new ConnectionModel(
-          toEditModel.id,
-          this.account,
-          this.container,
-          this.sas,
-        )
-      : ConnectionModel.createConnectionModel(
-          this.account,
-          this.container,
-          this.sas,
-        );
+    const connection = ConnectionModel.createConnectionModel(
+        this.account,
+        this.container,
+        this.sas,
+      );
 
     const errors = await validate(connection);
 
