@@ -12,7 +12,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile(join(__dirname, './ui/index.html'));
+  mainWindow.loadFile(join(__dirname, '../node_modules/@az-blobs/ui/dist/index.html'));
 
   app.setName('AZBlobs');
   new Menu(app, mainWindow.webContents).create();
