@@ -5,7 +5,7 @@
     :ok-disabled="isOkDisabled"
     centered
     @ok="handler"
-    @hide="closeDialog"
+    @hidden="closeDialog"
     @show="onShow"
   >
     <div role="group">
@@ -34,6 +34,7 @@
 </template>
 
 <script lang="ts">
+import { BvModalEvent } from 'bootstrap-vue';
 import { validate, ValidationError } from 'class-validator';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
@@ -111,21 +112,16 @@ export default class Dialog extends Vue {
     this.sas = toEditModel.sas;
   }
 
-  private async handler(): void {
+  private async handler(event: BvModalEvent): void {
+    event.preventDefault();
+
     const toEditModel = this.toEditModel;
 
-    const connection = toEditModel
-      ? new ConnectionModel(
-          toEditModel.id,
-          this.account,
-          this.container,
-          this.sas,
-        )
-      : ConnectionModel.createConnectionModel(
-          this.account,
-          this.container,
-          this.sas,
-        );
+    const connection = ConnectionModel.createConnectionModel(
+        this.account,
+        this.container,
+        this.sas,
+      );
 
     const errors = await validate(connection);
 
@@ -142,21 +138,17 @@ export default class Dialog extends Vue {
       return;
     }
 
-    if (toEditModel) {
-      try {
-        this.edit(connection);
-      } catch (e) {
-        // TODO: add notification here
-        console.error(e);
-      }
-      return;
-    }
-
     try {
-      this.create(connection);
+      if (toEditModel) {
+        this.edit(connection);
+      } else {
+        this.create(connection);
+      }
     } catch (e) {
       // TODO: add notification here
       console.error(e);
+    } finally {
+      this.closeDialog();
     }
   }
 }

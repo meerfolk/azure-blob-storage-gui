@@ -1,6 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 
-import { BlobModel, getBlobList } from '../business/azureBlobStorage/blob';
+import { BlobModel, getBlobList, uploadBlob } from '../business/azureBlobStorage';
 import { getErrorMessage } from '../business/azureBlobStorage/error-messages';
 
 import { RootState } from '.';
@@ -11,6 +11,8 @@ export default class BlobList extends VuexModule<any, RootState> {
     public isReloading: boolean = false;
     public list: Array<BlobModel> | null = null;
     public prefix: string = '';
+    public isUploadDialogOpen: boolean = false;
+    public isUploading: boolean = false;
 
     @Mutation
     private setReloadIntervalId(value: number | null): void {
@@ -30,6 +32,16 @@ export default class BlobList extends VuexModule<any, RootState> {
     @Mutation
     public setList(value: Array<BlobModel> | null) {
         this.list = value;
+    }
+
+    @Mutation
+    public setIsUploadDialogOpen(value: boolean) {
+        this.isUploadDialogOpen = value;
+    }
+
+    @Mutation
+    public setIsUploading(value: boolean) {
+        this.isUploading = value;
     }
 
     @Action
@@ -86,5 +98,34 @@ export default class BlobList extends VuexModule<any, RootState> {
         this.context.commit('setPrefix', prefix);
 
         this.context.dispatch('reload');
+    }
+
+    @Action
+    public uploadBlob(data: { name: string, file: File }): void {
+        const { name, file } = data;
+        const connection = this.context.rootState.connections?.current;
+
+        if (!connection) {
+            return;
+        }
+
+        this.context.commit('setIsUploading', true);
+
+        uploadBlob(connection, file, name)
+            .then(() => {
+                this.context.commit('setIsUploading', false);
+                this.context.commit('setIsUploadDialogOpen', false);
+                return this.context.dispatch('reload');
+            })
+    }
+
+    @Action
+    public openUploadDialog(): void {
+        this.context.commit('setIsUploadDialogOpen', true);
+    }
+
+    @Action
+    public closeUploadDialog(): void {
+        this.context.commit('setIsUploadDialogOpen', false);
     }
 }

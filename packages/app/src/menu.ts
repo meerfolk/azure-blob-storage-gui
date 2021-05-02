@@ -6,7 +6,7 @@ import {
     WebContents,
 } from 'electron';
 
-import { SETTINGS_OPEN } from './messages';
+import { messages } from '@az-blobs/common';
 
 export class Menu {
     private readonly isMac: boolean = false;
@@ -14,7 +14,7 @@ export class Menu {
         {
             label: 'Settings',
             click: () => {
-                this.content.send(SETTINGS_OPEN);
+                this.content.send(messages.SETTINGS_OPEN);
             },
         },
         { type: 'separator' },

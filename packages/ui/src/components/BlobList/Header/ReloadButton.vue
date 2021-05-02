@@ -15,14 +15,13 @@ const blobListStore = namespace('blobList');
 })
 export default class ReloadButton extends Vue {
   @blobListStore.State
-  private isReloading: boolean;
+  public isReloading: boolean;
 
   @blobListStore.Action
-  private reload: () => void;
+  public reload: () => void;
 
   public get animation(): string | null {
     return this.isReloading ? 'spin' : null;
   }
 }
 </script>
->

@@ -1,11 +1,9 @@
 <template>
   <div>
     <view-blob-dialog />
+    <upload-blob-dialog />
 
-    <div class="header">
-      <reload-button />
-      <blob-prefix />
-    </div>
+    <blob-list-header />
     <b-table
       id="blobListTable"
       :items="items"
@@ -42,16 +40,16 @@ import Vue from 'vue';
 import { BIcon } from 'bootstrap-vue';
 
 import ViewBlobDialog from './ViewBlobDialog';
-import Prefix from './Prefix';
-import ReloadButton from './ReloadButton';
+import UploadBlobDialog from './UploadDialog';
+import BlobListHeader from './Header/Header';
 
 export default Vue.extend({
   name: 'blob-list',
   components: {
     'b-icon': BIcon,
     'view-blob-dialog': ViewBlobDialog,
-    'blob-prefix': Prefix,
-    ReloadButton,
+    BlobListHeader,
+    UploadBlobDialog,
   },
   computed: {
     items() {
