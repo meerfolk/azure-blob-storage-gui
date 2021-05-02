@@ -89,7 +89,7 @@ export default class Connections extends VuexModule {
         updateConnection(this.toEdit.id, model);
 
         if (this.toEdit?.id === this.current?.id) {
-            this.context.dispatch('changeCurrent', model.id);
+            this.context.commit('setCurrent', model.id);
         }
 
         this.context.dispatch('loadList');
@@ -135,7 +135,7 @@ export default class Connections extends VuexModule {
     @Action
     public openDialogToEdit(id: string): void {
         const connection = this.list.find((connection) => connection.id === id);
-        
+
         if (!connection) {
             throw new Error('Connection not found');
         }
